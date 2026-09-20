@@ -6,9 +6,6 @@ package com.sunnaicor.client.model;
 //  - El namespace del ModelLayerLocation se cambio de "modid" a "sunna_icor".
 //  - Se renombro la clase para seguir la convencion de nombres de Java.
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-
 import com.sunnaicor.SunnaIcor;
 
 import net.minecraft.client.model.EntityModel;
@@ -20,27 +17,28 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 
-public class SunnaIcorBootsModel<T extends Entity> extends EntityModel<T> {
+public class SunnaIcorLeggingsModel extends EntityModel<HumanoidRenderState> {
 	// This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(SunnaIcor.id("sunna_icor_boots"), "main");
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(SunnaIcor.id("sunna_icor_leggings"), "main");
 	private final ModelPart root;
-	private final ModelPart armor_boots;
-	private final ModelPart boots;
-	private final ModelPart boot_leftleg;
-	private final ModelPart boot_leftleg_parts;
-	private final ModelPart boot_rightleg;
-	private final ModelPart boot_rightleg_parts;
+	private final ModelPart armor_leggings;
+	private final ModelPart leggings;
+	private final ModelPart leggings_leftleg;
+	private final ModelPart leggings_leftleg_parts;
+	private final ModelPart leggings_rightleg;
+	private final ModelPart leggings_rightleg_parts;
 
-	public SunnaIcorBootsModel(ModelPart root) {
+	public SunnaIcorLeggingsModel(ModelPart root) {
+		super(root);
 		this.root = root.getChild("root");
-		this.armor_boots = this.root.getChild("armor_boots");
-		this.boots = this.armor_boots.getChild("boots");
-		this.boot_leftleg = this.boots.getChild("boot_leftleg");
-		this.boot_leftleg_parts = this.boot_leftleg.getChild("boot_leftleg_parts");
-		this.boot_rightleg = this.boots.getChild("boot_rightleg");
-		this.boot_rightleg_parts = this.boot_rightleg.getChild("boot_rightleg_parts");
+		this.armor_leggings = this.root.getChild("armor_leggings");
+		this.leggings = this.armor_leggings.getChild("leggings");
+		this.leggings_leftleg = this.leggings.getChild("leggings_leftleg");
+		this.leggings_leftleg_parts = this.leggings_leftleg.getChild("leggings_leftleg_parts");
+		this.leggings_rightleg = this.leggings.getChild("leggings_rightleg");
+		this.leggings_rightleg_parts = this.leggings_rightleg.getChild("leggings_rightleg_parts");
 	}
 
 	public static LayerDefinition createBodyLayer() {
@@ -49,19 +47,19 @@ public class SunnaIcorBootsModel<T extends Entity> extends EntityModel<T> {
 
 		PartDefinition root = partdefinition.addOrReplaceChild("root", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
 
-		PartDefinition armor_boots = root.addOrReplaceChild("armor_boots", CubeListBuilder.create(), PartPose.offset(0.0F, -12.0F, 0.0F));
+		PartDefinition armor_leggings = root.addOrReplaceChild("armor_leggings", CubeListBuilder.create(), PartPose.offset(0.0F, -24.0F, 0.0F));
 
-		PartDefinition boots = armor_boots.addOrReplaceChild("boots", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
+		PartDefinition leggings = armor_leggings.addOrReplaceChild("leggings", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-		PartDefinition boot_leftleg = boots.addOrReplaceChild("boot_leftleg", CubeListBuilder.create().texOffs(0, 114).addBox(-2.0F, 8.0F, -2.0F, 4.0F, 4.0F, 4.0F, new CubeDeformation(0.55F)), PartPose.offset(-2.0F, 0.0F, 0.0F));
+		PartDefinition leggings_leftleg = leggings.addOrReplaceChild("leggings_leftleg", CubeListBuilder.create().texOffs(0, 50).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.55F)), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-		PartDefinition boot_leftleg_parts = boot_leftleg.addOrReplaceChild("boot_leftleg_parts", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
+		PartDefinition leggings_leftleg_parts = leggings_leftleg.addOrReplaceChild("leggings_leftleg_parts", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-		PartDefinition boot_rightleg = boots.addOrReplaceChild("boot_rightleg", CubeListBuilder.create().texOffs(58, 114).addBox(-2.0F, 8.0F, -2.0F, 4.0F, 4.0F, 4.0F, new CubeDeformation(0.55F)), PartPose.offset(2.0F, 0.0F, 0.0F));
+		PartDefinition leggings_rightleg = leggings.addOrReplaceChild("leggings_rightleg", CubeListBuilder.create().texOffs(24, 50).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.55F)), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-		PartDefinition boot_rightleg_parts = boot_rightleg.addOrReplaceChild("boot_rightleg_parts", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
+		PartDefinition leggings_rightleg_parts = leggings_rightleg.addOrReplaceChild("leggings_rightleg_parts", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-		return LayerDefinition.create(meshdefinition, 256, 256);
+		return LayerDefinition.create(meshdefinition, 64, 64);
 	}
 
 	/**
@@ -69,20 +67,16 @@ public class SunnaIcorBootsModel<T extends Entity> extends EntityModel<T> {
 	 * dejando intacto el posicionamiento original del modelo de Blockbench.
 	 */
 	public void copyLegPose(ModelPart contextRightLeg, ModelPart contextLeftLeg) {
-		this.boot_rightleg.xRot = contextRightLeg.xRot;
-		this.boot_rightleg.yRot = contextRightLeg.yRot;
-		this.boot_rightleg.zRot = contextRightLeg.zRot;
-		this.boot_leftleg.xRot = contextLeftLeg.xRot;
-		this.boot_leftleg.yRot = contextLeftLeg.yRot;
-		this.boot_leftleg.zRot = contextLeftLeg.zRot;
+		this.leggings_rightleg.xRot = contextRightLeg.xRot;
+		this.leggings_rightleg.yRot = contextRightLeg.yRot;
+		this.leggings_rightleg.zRot = contextRightLeg.zRot;
+		this.leggings_leftleg.xRot = contextLeftLeg.xRot;
+		this.leggings_leftleg.yRot = contextLeftLeg.yRot;
+		this.leggings_leftleg.zRot = contextLeftLeg.zRot;
 	}
 
 	@Override
-	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-	}
-
-	@Override
-	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
-		root.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+	public void setupAnim(HumanoidRenderState state) {
 	}
 }
+

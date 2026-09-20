@@ -30,10 +30,10 @@ loom {
 dependencies {
 	// Minecraft 26.1+ no esta ofuscado, por lo que ya NO se declara una linea "mappings"
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	// Fabric API (ya no requiere "modImplementation" desde 26.1, se usa "implementation")
-	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 }
 
 java {
