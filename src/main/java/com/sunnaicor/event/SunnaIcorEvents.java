@@ -99,7 +99,7 @@ public final class SunnaIcorEvents {
 		Vec3 center = attacker.position().add(0, attacker.getBbHeight() * 0.5, 0);
 
 		level.playSound(null, center.x, center.y, center.z, SoundEvents.GENERIC_EXPLODE,
-				SoundSource.PLAYERS, 3.0F, 0.9F + level.random.nextFloat() * 0.2F);
+				SoundSource.PLAYERS, 3.0F, 0.9F + level.getRandom().nextFloat() * 0.2F);
 		level.sendParticles(ParticleTypes.EXPLOSION_EMITTER, center.x, center.y, center.z, 1, 0.0, 0.0, 0.0, 0.0);
 		level.sendParticles(ParticleTypes.LAVA, center.x, center.y, center.z, 12, 0.4, 0.4, 0.4, 0.05);
 
@@ -130,7 +130,7 @@ public final class SunnaIcorEvents {
 			double horizontalDistance = Math.max(delta.horizontalDistance(), 0.1);
 			double ratioX = delta.x / horizontalDistance;
 			double ratioZ = delta.z / horizontalDistance;
-			target.knockback(EXPLOSION_KNOCKBACK * Math.max(falloff, 0.5), -ratioX, -ratioZ);
+			target.knockback(EXPLOSION_KNOCKBACK * Math.max(falloff, 0.5), -ratioX, -ratioZ, blastSource, damage, true);
 			target.setDeltaMovement(target.getDeltaMovement().add(0, 0.35, 0));
 		}
 	}

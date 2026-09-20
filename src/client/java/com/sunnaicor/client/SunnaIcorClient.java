@@ -15,7 +15,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -23,7 +23,7 @@ import net.minecraft.world.item.ItemStack;
 public class SunnaIcorClient implements ClientModInitializer {
 
 	// Textura unica usada por las 4 piezas (mapa UV exportado desde Blockbench).
-	private static final ResourceLocation ARMOR_TEXTURE = SunnaIcor.id("textures/models/armor/sunna_icor_armor.png");
+	private static final Identifier ARMOR_TEXTURE = SunnaIcor.id("textures/models/armor/sunna_icor_armor.png");
 
 	@Override
 	public void onInitializeClient() {
@@ -57,22 +57,22 @@ public class SunnaIcorClient implements ClientModInitializer {
 				case HEAD -> {
 					SunnaIcorHelmetModel<LivingEntity> model = new SunnaIcorHelmetModel<>(entityModels.bakeLayer(SunnaIcorHelmetModel.LAYER_LOCATION));
 					model.copyHeadPose(contextModel.head);
-					renderPart(poseStack, bufferSource, light, stack, model, ARMOR_TEXTURE);
+					ArmorRenderer.renderPart(poseStack, bufferSource, light, stack, model, ARMOR_TEXTURE);
 				}
 				case CHEST -> {
 					SunnaIcorChestplateModel<LivingEntity> model = new SunnaIcorChestplateModel<>(entityModels.bakeLayer(SunnaIcorChestplateModel.LAYER_LOCATION));
 					model.copyBodyPose(contextModel.body);
-					renderPart(poseStack, bufferSource, light, stack, model, ARMOR_TEXTURE);
+					ArmorRenderer.renderPart(poseStack, bufferSource, light, stack, model, ARMOR_TEXTURE);
 				}
 				case LEGS -> {
 					SunnaIcorLeggingsModel<LivingEntity> model = new SunnaIcorLeggingsModel<>(entityModels.bakeLayer(SunnaIcorLeggingsModel.LAYER_LOCATION));
 					model.copyLegPose(contextModel.rightLeg, contextModel.leftLeg);
-					renderPart(poseStack, bufferSource, light, stack, model, ARMOR_TEXTURE);
+					ArmorRenderer.renderPart(poseStack, bufferSource, light, stack, model, ARMOR_TEXTURE);
 				}
 				case FEET -> {
 					SunnaIcorBootsModel<LivingEntity> model = new SunnaIcorBootsModel<>(entityModels.bakeLayer(SunnaIcorBootsModel.LAYER_LOCATION));
 					model.copyLegPose(contextModel.rightLeg, contextModel.leftLeg);
-					renderPart(poseStack, bufferSource, light, stack, model, ARMOR_TEXTURE);
+					ArmorRenderer.renderPart(poseStack, bufferSource, light, stack, model, ARMOR_TEXTURE);
 				}
 				default -> {
 					// BODY (para animales/otros contextos): no aplica a esta armadura.
