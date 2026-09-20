@@ -1,88 +1,102 @@
-package com.sunnaicor.client;
-
-import com.mojang.blaze3d.vertex.PoseStack;
+package com.sunnaicor.client.model;
 
 import com.sunnaicor.SunnaIcor;
-import com.sunnaicor.client.model.SunnaIcorBootsModel;
-import com.sunnaicor.client.model.SunnaIcorChestplateModel;
-import com.sunnaicor.client.model.SunnaIcorHelmetModel;
-import com.sunnaicor.client.model.SunnaIcorLeggingsModel;
-import com.sunnaicor.item.ModItems;
 
-import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
-import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
-import net.minecraft.resources.Identifier;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.ItemStack;
 
-public class SunnaIcorClient implements ClientModInitializer {
+public class SunnaIcorHelmetModel extends EntityModel<HumanoidRenderState> {
+    // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(SunnaIcor.id("sunna_icor_helmet"), "main");
+    private final ModelPart root;
+    private final ModelPart armor_helmet;
+    private final ModelPart helmet;
+    private final ModelPart helmet_parts;
+    private final ModelPart helmet_ornaments;
+    private final ModelPart helmet_ornament_left;
+    private final ModelPart helmet_ornament_right;
+    private final ModelPart helmet_visor;
+    private final ModelPart helmet_visor_left;
+    private final ModelPart helmet_visor_right;
 
-	// Textura unica usada por las 4 piezas (mapa UV exportado desde Blockbench).
-	private static final Identifier ARMOR_TEXTURE = SunnaIcor.id("textures/models/armor/sunna_icor_armor.png");
+    public SunnaIcorHelmetModel(ModelPart root) {
+        super(root);
+        this.root = root.getChild("root");
+        this.armor_helmet = this.root.getChild("armor_helmet");
+        this.helmet = this.armor_helmet.getChild("helmet");
+        this.helmet_parts = this.helmet.getChild("helmet_parts");
+        this.helmet_ornaments = this.helmet_parts.getChild("helmet_ornaments");
+        this.helmet_ornament_left = this.helmet_ornaments.getChild("helmet_ornament_left");
+        this.helmet_ornament_right = this.helmet_ornaments.getChild("helmet_ornament_right");
+        this.helmet_visor = this.helmet_parts.getChild("helmet_visor");
+        this.helmet_visor_left = this.helmet_visor.getChild("helmet_visor_left");
+        this.helmet_visor_right = this.helmet_visor.getChild("helmet_visor_right");
+    }
 
-	@Override
-	public void onInitializeClient() {
-		EntityModelLayerRegistry.registerModelLayer(SunnaIcorHelmetModel.LAYER_LOCATION, SunnaIcorHelmetModel::createBodyLayer);
-		EntityModelLayerRegistry.registerModelLayer(SunnaIcorChestplateModel.LAYER_LOCATION, SunnaIcorChestplateModel::createBodyLayer);
-		EntityModelLayerRegistry.registerModelLayer(SunnaIcorLeggingsModel.LAYER_LOCATION, SunnaIcorLeggingsModel::createBodyLayer);
-		EntityModelLayerRegistry.registerModelLayer(SunnaIcorBootsModel.LAYER_LOCATION, SunnaIcorBootsModel::createBodyLayer);
+    public static LayerDefinition createBodyLayer() {
+        MeshDefinition meshdefinition = new MeshDefinition();
+        PartDefinition partdefinition = meshdefinition.getRoot();
 
-		ArmorRenderer.register(new SunnaIcorArmorRenderer(),
-				ModItems.SUNNA_ICOR_HELMET,
-				ModItems.SUNNA_ICOR_CHESTPLATE,
-				ModItems.SUNNA_ICOR_LEGGINGS,
-				ModItems.SUNNA_ICOR_BOOTS
-		);
-	}
+        PartDefinition root = partdefinition.addOrReplaceChild("root", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
 
-	/**
-	 * Renderiza cada pieza con su modelo personalizado hecho en Blockbench,
-	 * en lugar del sistema de texturas planas "humanoid/humanoid_leggings"
-	 * que usa la armadura vanilla.
-	 */
-	private static final class SunnaIcorArmorRenderer implements ArmorRenderer {
+        PartDefinition armor_helmet = root.addOrReplaceChild("armor_helmet", CubeListBuilder.create(), PartPose.offset(0.0F, -24.0F, 0.0F));
 
-		@Override
-		public void render(PoseStack poseStack,
-				SubmitNodeCollector submitNodeCollector,
-				ItemStack stack,
-				HumanoidRenderState state,
-				EquipmentSlot slot,
-				int light,
-				HumanoidModel<HumanoidRenderState> contextModel) {
+        PartDefinition helmet = armor_helmet.addOrReplaceChild("helmet", CubeListBuilder.create().texOffs(34, 26).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.75F))
+        .texOffs(68, 77).addBox(-1.0F, -9.75F, -5.25F, 2.0F, 1.0F, 10.0F, new CubeDeformation(0.0F))
+        .texOffs(42, 124).addBox(-1.0F, -9.75F, 4.75F, 2.0F, 8.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-			var entityModels = Minecraft.getInstance().getEntityModels();
+        PartDefinition helmet_parts = helmet.addOrReplaceChild("helmet_parts", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-			switch (slot) {
-				case HEAD -> {
-					SunnaIcorHelmetModel model = new SunnaIcorHelmetModel(entityModels.bakeLayer(SunnaIcorHelmetModel.LAYER_LOCATION));
-					model.copyHeadPose(contextModel.head);
-					ArmorRenderer.renderPart(poseStack, submitNodeCollector, light, stack, model, ARMOR_TEXTURE);
-				}
-				case CHEST -> {
-					SunnaIcorChestplateModel model = new SunnaIcorChestplateModel(entityModels.bakeLayer(SunnaIcorChestplateModel.LAYER_LOCATION));
-					model.copyBodyPose(contextModel.body);
-					ArmorRenderer.renderPart(poseStack, submitNodeCollector, light, stack, model, ARMOR_TEXTURE);
-				}
-				case LEGS -> {
-					SunnaIcorLeggingsModel model = new SunnaIcorLeggingsModel(entityModels.bakeLayer(SunnaIcorLeggingsModel.LAYER_LOCATION));
-					model.copyLegPose(contextModel.rightLeg, contextModel.leftLeg);
-					ArmorRenderer.renderPart(poseStack, submitNodeCollector, light, stack, model, ARMOR_TEXTURE);
-				}
-				case FEET -> {
-					SunnaIcorBootsModel model = new SunnaIcorBootsModel(entityModels.bakeLayer(SunnaIcorBootsModel.LAYER_LOCATION));
-					model.copyLegPose(contextModel.rightLeg, contextModel.leftLeg);
-					ArmorRenderer.renderPart(poseStack, submitNodeCollector, light, stack, model, ARMOR_TEXTURE);
-				}
-				default -> {
-					// BODY (para animales/otros contextos): no aplica a esta armadura.
-				}
-			}
-		}
-	}
+        PartDefinition helmet_ornaments = helmet_parts.addOrReplaceChild("helmet_ornaments", CubeListBuilder.create(), PartPose.offsetAndRotation(0.0F, -7.0F, -7.0F, -0.5672F, 0.0F, 0.0F));
+
+        PartDefinition cube_r1 = helmet_ornaments.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(92, 77).addBox(-5.5F, -5.5F, -1.0F, 8.0F, 8.0F, 2.0F, new CubeDeformation(0.005F))
+        .texOffs(116, 93).addBox(-2.5F, -2.5F, -1.0F, 5.0F, 5.0F, 2.0F, new CubeDeformation(0.005F)), PartPose.offsetAndRotation(0.0F, 0.0F, 1.0F, 0.0F, 0.0F, 0.7854F));
+
+        PartDefinition helmet_ornament_left = helmet_ornaments.addOrReplaceChild("helmet_ornament_left", CubeListBuilder.create().texOffs(122, 60).addBox(-6.0F, -3.0F, 0.0F, 6.0F, 2.0F, 1.0F, new CubeDeformation(0.0F))
+        .texOffs(0, 84).addBox(-12.0F, -7.0F, 0.0F, 12.0F, 8.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.5F, 3.0F, 0.5F, 0.0F, 0.0F, 0.3927F));
+
+        PartDefinition helmet_ornament_right = helmet_ornaments.addOrReplaceChild("helmet_ornament_right", CubeListBuilder.create().texOffs(84, 0).addBox(0.0F, -7.0F, 0.0F, 12.0F, 8.0F, 1.0F, new CubeDeformation(0.0F))
+        .texOffs(126, 83).addBox(0.0F, -3.0F, 0.0F, 6.0F, 2.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.5F, 3.0F, 0.5F, 0.0F, 0.0F, -0.3927F));
+
+        PartDefinition helmet_visor = helmet_parts.addOrReplaceChild("helmet_visor", CubeListBuilder.create(), PartPose.offsetAndRotation(0.0F, -2.5F, -9.0F, 0.6545F, 0.0F, 0.0F));
+
+        PartDefinition cube_r2 = helmet_visor.addOrReplaceChild("cube_r2", CubeListBuilder.create().texOffs(120, 42).addBox(-1.5F, -0.075F, -1.5F, 4.0F, 0.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 2.0F, 0.0F, 0.0F, 0.0F));
+
+        PartDefinition helmet_visor_left = helmet_visor.addOrReplaceChild("helmet_visor_left", CubeListBuilder.create().texOffs(76, 106).addBox(-6.0F, 0.0F, 0.0F, 6.0F, 1.0F, 4.0F, new CubeDeformation(0.0F))
+        .texOffs(116, 100).addBox(-9.0F, 0.0F, 0.0F, 3.0F, 3.0F, 4.0F, new CubeDeformation(0.0F))
+        .texOffs(88, 126).addBox(-6.0F, 1.0F, 0.0F, 6.0F, 2.0F, 1.0F, new CubeDeformation(0.0F))
+        .texOffs(26, 58).addBox(-3.0F, 3.0F, 0.0F, 3.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+        .texOffs(90, 111).addBox(-6.0F, 1.0F, 1.0F, 1.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.6109F, 0.0F));
+
+        PartDefinition helmet_visor_right = helmet_visor.addOrReplaceChild("helmet_visor_right", CubeListBuilder.create().texOffs(126, 107).addBox(0.0F, 1.0F, 0.0F, 6.0F, 2.0F, 1.0F, new CubeDeformation(0.0F))
+        .texOffs(60, 58).addBox(0.0F, 3.0F, 0.0F, 3.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+        .texOffs(90, 115).addBox(5.0F, 1.0F, 1.0F, 1.0F, 2.0F, 2.0F, new CubeDeformation(0.0F))
+        .texOffs(0, 109).addBox(0.0F, 0.0F, 0.0F, 6.0F, 1.0F, 4.0F, new CubeDeformation(0.0F))
+        .texOffs(34, 117).addBox(6.0F, 0.0F, 0.0F, 3.0F, 3.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, -0.6109F, 0.0F));
+
+        return LayerDefinition.create(meshdefinition, 256, 256);
+    }
+
+    /**
+     * Copia solo la ROTACION de la cabeza del modelo base de la entidad
+     * (mirada arriba/abajo, giro de cabeza), dejando intacto el
+     * posicionamiento original del modelo hecho en Blockbench.
+     */
+    public void copyHeadPose(ModelPart contextHead) {
+        this.armor_helmet.xRot = contextHead.xRot;
+        this.armor_helmet.yRot = contextHead.yRot;
+        this.armor_helmet.zRot = contextHead.zRot;
+    }
+
+    @Override
+    public void setupAnim(HumanoidRenderState state) {
+    }
 }
