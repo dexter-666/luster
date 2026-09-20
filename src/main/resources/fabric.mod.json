@@ -1,0 +1,28 @@
+{
+	"schemaVersion": 1,
+	"id": "sunna_icor",
+	"version": "${version}",
+	"name": "Sunna Icor",
+	"description": "Añade la armadura Sunna Icor: inmune al fuego y la lava, con protección altísima y una explosión defensiva cada 4 golpes recibidos.",
+	"authors": [
+		"Tu nombre aqui"
+	],
+	"contact": {},
+	"license": "CC0-1.0",
+	"icon": "assets/sunna_icor/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.sunnaicor.SunnaIcor"
+		],
+		"client": [
+			"com.sunnaicor.client.SunnaIcorClient"
+		]
+	},
+	"mixins": [],
+	"depends": {
+		"fabricloader": ">=0.17.4",
+		"minecraft": "26.2",
+		"fabric-api": "*"
+	}
+}

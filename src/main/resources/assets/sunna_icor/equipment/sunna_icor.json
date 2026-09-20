@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "sunna_icor:sunna_icor"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "sunna_icor:sunna_icor"
+      }
+    ]
+  }
+}

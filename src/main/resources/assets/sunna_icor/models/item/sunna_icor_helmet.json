@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "sunna_icor:item/sunna_icor_helmet"
+  }
+}

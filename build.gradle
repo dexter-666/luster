@@ -1,0 +1,57 @@
+plugins {
+	id 'net.fabricmc.fabric-loom' version "${loom_version}"
+	id 'maven-publish'
+}
+
+version = project.mod_version
+group = project.maven_group
+
+base {
+	archivesName = project.archives_base_name
+}
+
+repositories {
+	// Loom ya agrega los repositorios necesarios para Minecraft y Fabric.
+	// Agrega aqui otros repositorios solo si dependes de otros mods externos.
+}
+
+loom {
+	// Minecraft 26.x separa el codigo de cliente y servidor; esto crea el sourceSet "client"
+	splitEnvironmentSourceSets()
+
+	mods {
+		"sunna_icor" {
+			sourceSet sourceSets.main
+			sourceSet sourceSets.client
+		}
+	}
+}
+
+dependencies {
+	// Minecraft 26.1+ no esta ofuscado, por lo que ya NO se declara una linea "mappings"
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+	// Fabric API (ya no requiere "modImplementation" desde 26.1, se usa "implementation")
+	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+}
+
+java {
+	withSourcesJar()
+
+	// Minecraft 26.x requiere Java 25
+	sourceCompatibility = JavaVersion.VERSION_25
+	targetCompatibility = JavaVersion.VERSION_25
+}
+
+processResources {
+	inputs.property "version", project.version
+
+	filesMatching("fabric.mod.json") {
+		expand "version": project.version
+	}
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.release = 25
+}

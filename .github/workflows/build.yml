@@ -1,0 +1,36 @@
+name: Compilar mod Sunna Icor
+
+# Se ejecuta solo en GitHub (donde SÍ hay acceso a los servidores de
+# Mojang/Fabric), cada vez que subes codigo o lo lanzas manualmente desde
+# la pestaña "Actions".
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el codigo del repositorio
+        uses: actions/checkout@v4
+
+      - name: Instalar Java 25 (lo que requiere Minecraft 26.x)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+
+      - name: Instalar Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.14.3'
+
+      - name: Compilar el mod
+        run: gradle build --no-daemon --stacktrace
+
+      - name: Publicar el .jar compilado como descarga
+        uses: actions/upload-artifact@v4
+        with:
+          name: Sunna-Icor-mod-jar
+          path: build/libs/*.jar
+          if-no-files-found: error
